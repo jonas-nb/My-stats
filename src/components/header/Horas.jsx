@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 
 const Horas = () => {
-  let [getLiveMoment, setGetLiveMoment] = useState();
-  useEffect(() => HoraMomento(), [getLiveMoment]);
+  let [liveTime, setLiveTime] = useState(new Date().toLocaleTimeString());
 
-  const data = new Date();
+  //atualiza hora no DOM
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLiveTime(new Date().toTimeString());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   //irá setar o dia conforme o método
+  const data = new Date();
   const getDia = data.getDay();
 
   let dia;
@@ -37,21 +43,10 @@ const Horas = () => {
       break;
   }
 
-  function HoraMomento() {
-    let hora = data.getHours();
-    hora < 10 ? (hora = `0${hora}`) : hora;
-
-    let minuto = data.getMinutes();
-    minuto < 10 ? (minuto = `0${minuto}`) : minuto;
-
-    setGetLiveMoment(`${hora}:${minuto}`);
-    console.log(getLiveMoment);
-  }
-
   return (
     <div>
       <div>{dia}</div>
-      <div>{getLiveMoment}</div>
+      <div>{liveTime.slice(0, 5)}</div>
     </div>
   );
 };
